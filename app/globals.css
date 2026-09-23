@@ -1,0 +1,150 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+}
+
+/* Nexus transit palette: deep slate/navy with a distinct yellow accent */
+:root {
+  color-scheme: light;
+
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.24 0.03 255);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.24 0.03 255);
+
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.24 0.03 255);
+
+  /* Deep navy / slate */
+  --primary: oklch(0.32 0.07 258);
+  --primary-foreground: oklch(0.99 0.005 255);
+
+  --secondary: oklch(0.96 0.012 255);
+  --secondary-foreground: oklch(0.32 0.07 258);
+
+  --muted: oklch(0.965 0.008 255);
+  --muted-foreground: oklch(0.46 0.02 255);
+
+  /* Signal yellow accent */
+  --accent: oklch(0.86 0.16 92);
+  --accent-foreground: oklch(0.28 0.05 258);
+
+  --destructive: oklch(0.55 0.22 27);
+
+  --border: oklch(0.9 0.012 255);
+  --input: oklch(0.9 0.012 255);
+  --ring: oklch(0.55 0.09 258);
+
+  --radius: 0.75rem;
+
+  /* Accessibility: user-controllable font scale */
+  --font-scale: 1;
+}
+
+/* High-contrast mode toggled by the accessibility bar */
+.hc {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.14 0 0);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.14 0 0);
+
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.14 0 0);
+
+  --primary: oklch(0.16 0.02 258);
+  --primary-foreground: oklch(1 0 0);
+
+  --secondary: oklch(0.95 0 0);
+  --secondary-foreground: oklch(0.14 0 0);
+
+  --muted: oklch(0.95 0 0);
+  --muted-foreground: oklch(0.26 0 0);
+
+  --accent: oklch(0.82 0.18 92);
+  --accent-foreground: oklch(0.12 0 0);
+
+  --border: oklch(0.2 0 0);
+  --input: oklch(0.2 0 0);
+  --ring: oklch(0.14 0 0);
+}
+
+.hc * {
+  border-color: var(--border);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    /* Scale the root font size for the whole app */
+    font-size: calc(100% * var(--font-scale));
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+
+  /* Strong, always-visible focus ring for keyboard users */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring;
+  }
+
+  /* Simplified view: hide decorative elements, flatten visuals */
+  .simplified [data-decorative='true'] {
+    display: none !important;
+  }
+
+  .simplified * {
+    box-shadow: none !important;
+    background-image: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
