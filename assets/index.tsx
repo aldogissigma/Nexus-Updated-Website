@@ -13,9 +13,9 @@ import RenewACTPass from './renew_a_ct_pass.png';
 import SchoolPass from './school_pass.png';
 import TrainBox from './train_box.png';
 import FerryLogo from './ferry.png';
-import MetroLogo from 'metro_logo.png';
-import BusesLogo from 'buses.png';
-import RailLogo from 'rail.png';
+import MetroLogo from './metro_logo.png';
+import BusesLogo from './buses.png';
+import RailLogo from './rail.png';
 
 export {
   NexusHQ,
