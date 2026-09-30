@@ -33,4 +33,8 @@ export {
   RenewACTPass,
   SchoolPass,
   TrainBox,
+  FerryLogo,
+  MetroLogo,
+  BusesLogo,
+  RailLogo
 };
