@@ -1,11 +1,10 @@
 import NexusHQ from './Nexus_HQ.jpg';
 import NexusLogo from './Nexus_Logo.svg';
-import NorthShieldsFerryLanding from './North-Sheilds-Ferry-Landing-cr...'; // Replace '...' with the full filename
+import NorthShieldsFerryLanding from './North-Sheilds-Ferry-Landing-cropped.avif'; 
 import PopCardSeasonTickets from './Pop_Card_Season_Tickets.svg';
 import PopPayAsYouGoPAYG from './Pop_Pay_As_You_Go_PAYG.svg';
 import PopBlue from './Pop_blue.svg';
-import Screenshot from './Screenshot 2026-09-30 113315....'; // Replace '...' with the full filename
-import ClassAndYouthMetroPass from './class_and_youth_metro_pass.png';
+=import ClassAndYouthMetroPass from './class_and_youth_metro_pass.png';
 import Coach from './coach.avif';
 import ConcessionaryTravelPass from './concessionary_travel_pass.png';
 import MainBackgroundMetro from './main_background_metro.png';
