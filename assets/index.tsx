@@ -16,6 +16,7 @@ import FerryLogo from './ferry.png';
 import MetroLogo from './metro_logo.png';
 import BusesLogo from './buses.png';
 import RailLogo from './rail.png';
+import MayorFare from './mayor_fare.png';
 
 export {
   NexusHQ,
@@ -36,5 +37,6 @@ export {
   FerryLogo,
   MetroLogo,
   BusesLogo,
-  RailLogo
+  RailLogo,
+  MayorFare
 };
