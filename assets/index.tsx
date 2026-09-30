@@ -1,4 +1,4 @@
-import NexusHQ from './Nexus_HQ.jpg';
+import NexusHQ from './Nexus_House,_Newcastle_upon_Tyne,_4_September_2013.jpg';
 import NexusLogo from './Nexus_Logo.svg';
 import NorthShieldsFerryLanding from './North-Sheilds-Ferry-Landing-cropped.avif'; 
 import PopCardSeasonTickets from './Pop_Card_Season_Tickets.svg';
