@@ -3,11 +3,13 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
-import { Menu, Settings, X } from "lucide-react"
+import { Menu, Moon, Settings, Sun, X } from "lucide-react"
+import { useAccessibility } from "@/components/accessibility/accessibility-provider"
 import { NAV_ITEMS } from "@/lib/navigation"
 import { BrandLogo } from "./brand-logo"
 
 export function SiteHeader() {
+  const { isDark, setTheme } = useAccessibility()
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
 
@@ -47,6 +49,15 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setTheme(isDark ? "light" : "dark")}
+            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            title={isDark ? "Light mode" : "Dark mode"}
+            className="inline-flex size-10 items-center justify-center rounded-lg border border-border text-foreground hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+          >
+            {isDark ? <Sun className="size-4" aria-hidden="true" /> : <Moon className="size-4" aria-hidden="true" />}
+          </button>
           <Link
             href="/settings"
             aria-current={isActive("/settings") ? "page" : undefined}

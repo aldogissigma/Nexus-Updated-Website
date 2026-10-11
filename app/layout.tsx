@@ -2,7 +2,7 @@ import { Analytics } from "@vercel/analytics/next"
 import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import { AccessibilityProvider } from "@/components/accessibility/accessibility-provider"
+import { AccessibilityProvider, THEME_INIT_SCRIPT } from "@/components/accessibility/accessibility-provider"
 import { SiteHeader } from "@/components/layout/site-header"
 import { SiteFooter } from "@/components/layout/site-footer"
 import { SkipLink } from "@/components/layout/skip-link"
@@ -33,8 +33,11 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  colorScheme: "light",
-  themeColor: "#12705f",
+  colorScheme: "light dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#12705f" },
+    { media: "(prefers-color-scheme: dark)", color: "#0e1816" },
+  ],
 }
 
 export default function RootLayout({
@@ -43,7 +46,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body className="flex min-h-dvh flex-col antialiased">
         <AccessibilityProvider>
           <SkipLink />

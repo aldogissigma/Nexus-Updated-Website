@@ -1,11 +1,12 @@
 "use client"
 
-import { AArrowDown, AArrowUp, Contrast, Eye, Link2, Pause, RotateCcw, Type } from "lucide-react"
+import { AArrowDown, AArrowUp, Contrast, Eye, Link2, Monitor, Moon, Pause, RotateCcw, Sun, Type } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import {
   MAX_SCALE,
   MIN_SCALE,
   useAccessibility,
+  type Theme,
   type ToggleSetting,
 } from "@/components/accessibility/accessibility-provider"
 
@@ -14,7 +15,7 @@ const TOGGLES: { key: ToggleSetting; icon: LucideIcon; title: string; descriptio
     key: "highContrast",
     icon: Contrast,
     title: "High contrast",
-    description: "Uses black text, stronger borders and darker colours throughout.",
+    description: "Maximum-contrast text, stronger borders and bolder colours throughout. Works in light and dark mode.",
   },
   {
     key: "simplified",
@@ -42,12 +43,51 @@ const TOGGLES: { key: ToggleSetting; icon: LucideIcon; title: string; descriptio
   },
 ]
 
+const THEMES: { value: Theme; icon: LucideIcon; label: string }[] = [
+  { value: "light", icon: Sun, label: "Light" },
+  { value: "dark", icon: Moon, label: "Dark" },
+  { value: "system", icon: Monitor, label: "Match device" },
+]
+
 export function SettingsPanel() {
   const settings = useAccessibility()
-  const { fontScale, setFontScale, toggle, reset } = settings
+  const { theme, setTheme, fontScale, setFontScale, toggle, reset } = settings
 
   return (
     <div className="space-y-8">
+      <section
+        aria-labelledby="appearance-heading"
+        className="rounded-2xl border border-border bg-card p-6 text-card-foreground"
+      >
+        <h2 id="appearance-heading" className="text-xl font-bold">
+          Appearance
+        </h2>
+        <p className="mt-1 text-muted-foreground">
+          Choose light or dark mode, or follow your device setting.
+        </p>
+        <div role="radiogroup" aria-labelledby="appearance-heading" className="mt-5 grid grid-cols-3 gap-3">
+          {THEMES.map((t) => {
+            const Icon = t.icon
+            const selected = theme === t.value
+            return (
+              <button
+                key={t.value}
+                type="button"
+                role="radio"
+                aria-checked={selected}
+                onClick={() => setTheme(t.value)}
+                className={`flex flex-col items-center gap-2 rounded-xl border-2 px-3 py-4 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring ${
+                  selected ? "border-primary bg-secondary text-secondary-foreground" : "border-border bg-background hover:bg-muted"
+                }`}
+              >
+                <Icon className="size-5" aria-hidden="true" />
+                {t.label}
+              </button>
+            )
+          })}
+        </div>
+      </section>
+
       <section
         aria-labelledby="text-size-heading"
         className="rounded-2xl border border-border bg-card p-6 text-card-foreground"

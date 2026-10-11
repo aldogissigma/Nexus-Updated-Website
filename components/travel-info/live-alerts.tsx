@@ -32,9 +32,9 @@ const POOL: Alert[] = [
 ]
 
 const SEVERITY: Record<Severity, { icon: LucideIcon; label: string; classes: string }> = {
-  good: { icon: CheckCircle2, label: "Good service", classes: "border-l-green-600 bg-green-50 text-green-950" },
-  minor: { icon: Info, label: "Minor delays", classes: "border-l-amber-500 bg-amber-50 text-amber-950" },
-  major: { icon: AlertTriangle, label: "Major disruption", classes: "border-l-red-600 bg-red-50 text-red-950" },
+  good: { icon: CheckCircle2, label: "Good service", classes: "border-l-green-600 bg-green-50 text-green-950 dark:bg-green-950/40 dark:text-green-50" },
+  minor: { icon: Info, label: "Minor delays", classes: "border-l-amber-500 bg-amber-50 text-amber-950 dark:bg-amber-950/40 dark:text-amber-50" },
+  major: { icon: AlertTriangle, label: "Major disruption", classes: "border-l-red-600 bg-red-50 text-red-950 dark:bg-red-950/40 dark:text-red-50" },
 }
 
 const MODES: (Mode | "All")[] = ["All", "Metro", "Bus", "Ferry", "Rail"]

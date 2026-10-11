@@ -10,7 +10,10 @@ import {
   type ReactNode,
 } from "react"
 
+export type Theme = "light" | "dark" | "system"
+
 export type AccessibilitySettings = {
+  theme: Theme
   fontScale: number
   highContrast: boolean
   simplified: boolean
@@ -19,15 +22,18 @@ export type AccessibilitySettings = {
   readableSpacing: boolean
 }
 
-export type ToggleSetting = Exclude<keyof AccessibilitySettings, "fontScale">
+export type ToggleSetting = Exclude<keyof AccessibilitySettings, "fontScale" | "theme">
 
 type AccessibilityContextValue = AccessibilitySettings & {
+  isDark: boolean
+  setTheme: (theme: Theme) => void
   setFontScale: (scale: number) => void
   toggle: (key: ToggleSetting) => void
   reset: () => void
 }
 
 export const DEFAULT_SETTINGS: AccessibilitySettings = {
+  theme: "system",
   fontScale: 1,
   highContrast: false,
   simplified: false,
@@ -38,7 +44,10 @@ export const DEFAULT_SETTINGS: AccessibilitySettings = {
 
 export const MIN_SCALE = 0.9
 export const MAX_SCALE = 1.4
-const STORAGE_KEY = "nexus-a11y"
+export const STORAGE_KEY = "nexus-a11y"
+
+/** Runs before hydration so the saved theme is applied without a flash. */
+export const THEME_INIT_SCRIPT = `try{var s=JSON.parse(localStorage.getItem("${STORAGE_KEY}")||"{}"),t=s.theme||"system";if(t==="dark"||(t==="system"&&matchMedia("(prefers-color-scheme: dark)").matches))document.documentElement.classList.add("dark")}catch(e){}`
 
 const CLASS_NAMES: Record<ToggleSetting, string> = {
   highContrast: "hc",
@@ -52,6 +61,8 @@ const AccessibilityContext = createContext<AccessibilityContextValue | null>(nul
 
 export function AccessibilityProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<AccessibilitySettings>(DEFAULT_SETTINGS)
+  const [loaded, setLoaded] = useState(false)
+  const [systemDark, setSystemDark] = useState(false)
 
   // Restore saved preferences on mount.
   useEffect(() => {
@@ -61,11 +72,22 @@ export function AccessibilityProvider({ children }: { children: ReactNode }) {
     } catch {
       /* ignore malformed storage */
     }
+    setLoaded(true)
+
+    const media = window.matchMedia("(prefers-color-scheme: dark)")
+    setSystemDark(media.matches)
+    const onChange = (e: MediaQueryListEvent) => setSystemDark(e.matches)
+    media.addEventListener("change", onChange)
+    return () => media.removeEventListener("change", onChange)
   }, [])
+
+  const isDark = settings.theme === "dark" || (settings.theme === "system" && systemDark)
 
   // Reflect settings onto the document and persist them.
   useEffect(() => {
+    if (!loaded) return
     const root = document.documentElement
+    root.classList.toggle("dark", isDark)
     root.style.setProperty("--font-scale", String(settings.fontScale))
     for (const [key, className] of Object.entries(CLASS_NAMES)) {
       root.classList.toggle(className, settings[key as ToggleSetting])
@@ -75,7 +97,7 @@ export function AccessibilityProvider({ children }: { children: ReactNode }) {
     } catch {
       /* storage may be unavailable */
     }
-  }, [settings])
+  }, [settings, loaded, isDark])
 
   const setFontScale = useCallback(
     (scale: number) =>
@@ -85,6 +107,7 @@ export function AccessibilityProvider({ children }: { children: ReactNode }) {
       })),
     [],
   )
+  const setTheme = useCallback((theme: Theme) => setSettings((s) => ({ ...s, theme })), [])
   const toggle = useCallback(
     (key: ToggleSetting) => setSettings((s) => ({ ...s, [key]: !s[key] })),
     [],
@@ -92,8 +115,8 @@ export function AccessibilityProvider({ children }: { children: ReactNode }) {
   const reset = useCallback(() => setSettings(DEFAULT_SETTINGS), [])
 
   const value = useMemo<AccessibilityContextValue>(
-    () => ({ ...settings, setFontScale, toggle, reset }),
-    [settings, setFontScale, toggle, reset],
+    () => ({ ...settings, isDark, setTheme, setFontScale, toggle, reset }),
+    [settings, isDark, setTheme, setFontScale, toggle, reset],
   )
 
   return (
