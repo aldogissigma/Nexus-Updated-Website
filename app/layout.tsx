@@ -2,8 +2,7 @@ import { Analytics } from "@vercel/analytics/next"
 import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import { AccessibilityProvider } from "@/components/accessibility/accessibility-provider"
-import { AccessibilityBar } from "@/components/accessibility/accessibility-bar"
+import { AccessibilityProvider, THEME_INIT_SCRIPT } from "@/components/accessibility/accessibility-provider"
 import { SiteHeader } from "@/components/layout/site-header"
 import { SiteFooter } from "@/components/layout/site-footer"
 import { SkipLink } from "@/components/layout/skip-link"
@@ -17,8 +16,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Nexus Travel — Accessible journeys, tickets & Pop cards",
-    template: "%s | Nexus Travel",
+    default: "Nexus — Metro, bus, ferry, tickets & Pop cards in Tyne and Wear",
+    template: "%s | Nexus",
   },
   description:
     "A clean, accessibility-first travel service redesign. Plan journeys, manage Pop cards, buy tickets and get instant help from Nexus AI Support.",
@@ -34,8 +33,11 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  colorScheme: "light",
-  themeColor: "#26324d",
+  colorScheme: "light dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#12705f" },
+    { media: "(prefers-color-scheme: dark)", color: "#0e1816" },
+  ],
 }
 
 export default function RootLayout({
@@ -44,11 +46,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body className="flex min-h-dvh flex-col antialiased">
         <AccessibilityProvider>
           <SkipLink />
-          <AccessibilityBar />
           <SiteHeader />
           <main id="main-content" tabIndex={-1} className="flex-1 outline-none">
             {children}

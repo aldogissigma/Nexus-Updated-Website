@@ -62,7 +62,7 @@ export function AiCallout() {
               Hi! How can I help with your travel today?
             </p>
             <p className="ml-auto max-w-[85%] rounded-2xl rounded-br-sm bg-primary px-3.5 py-2.5 text-sm text-primary-foreground">
-              How do I order a 16–18 Pop card?
+              How do I get a Pop blue card?
             </p>
             <p className="max-w-[90%] rounded-2xl rounded-bl-sm border border-border bg-secondary px-3.5 py-2.5 text-sm">
               You can order one from the Pop Cards page in about 3 minutes — I&apos;ll

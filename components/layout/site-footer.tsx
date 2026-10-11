@@ -1,24 +1,24 @@
 import Link from "next/link"
 import { Phone } from "lucide-react"
-import { NAV_ITEMS } from "@/lib/navigation"
+import { FOOTER_EXTRA_ITEMS, NAV_ITEMS } from "@/lib/navigation"
 import { BrandLogo } from "./brand-logo"
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border bg-secondary text-secondary-foreground">
+    <footer className="border-t-4 border-primary bg-secondary text-secondary-foreground">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 md:grid-cols-[1.4fr_1fr_1fr] md:px-6">
         <div className="space-y-4">
           <BrandLogo />
           <p className="max-w-sm text-sm text-muted-foreground">
-            A conceptual, accessibility-first redesign of the regional travel service.
-            Plan journeys, manage Pop cards and buy tickets with less clutter.
+            A conceptual, accessibility-first redesign of the Nexus website for Metro,
+            bus, ferry and rail travel across Tyne and Wear.
           </p>
         </div>
 
         <nav aria-label="Footer">
           <h2 className="text-sm font-semibold uppercase tracking-wide">Services</h2>
           <ul className="mt-4 space-y-2">
-            {NAV_ITEMS.map((item) => (
+            {[...NAV_ITEMS, ...FOOTER_EXTRA_ITEMS].map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
@@ -45,6 +45,14 @@ export function SiteFooter() {
             </li>
             <li>Travel line open 7am–8pm daily.</li>
             <li>Use the Nexus AI Support widget for instant answers.</li>
+            <li>
+              <Link
+                href="/settings"
+                className="rounded font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              >
+                Change text size and contrast
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
@@ -52,7 +60,7 @@ export function SiteFooter() {
       <div className="border-t border-border">
         <p className="mx-auto max-w-6xl px-4 py-5 text-xs text-muted-foreground md:px-6">
           Conceptual redesign for demonstration only. Not affiliated with any live
-          transit operator. &copy; {new Date().getFullYear()} Nexus Travel (concept).
+          transit operator. &copy; {new Date().getFullYear()} Nexus (concept).
         </p>
       </div>
     </footer>

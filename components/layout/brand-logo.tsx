@@ -1,26 +1,20 @@
+import Image from "next/image"
 import Link from "next/link"
+import { NexusLogo } from "@/assets"
 
 export function BrandLogo({ className }: { className?: string }) {
   return (
     <Link
       href="/"
-      className={`group inline-flex items-center gap-2.5 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring ${className ?? ""}`}
+      className={`group inline-flex items-center gap-3 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring ${className ?? ""}`}
       aria-label="Nexus home"
     >
-      <span
-        aria-hidden="true"
-        className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground"
-      >
-        <span className="relative flex size-4 items-center justify-center">
-          <span className="absolute inset-0 rounded-full border-2 border-accent" />
-          <span className="size-1.5 rounded-full bg-accent" />
+      <Image src={NexusLogo} alt="" className="h-11 w-auto" priority />
+      <span className="hidden flex-col leading-none sm:flex">
+        <span className="text-[0.7rem] font-semibold uppercase tracking-widest text-muted-foreground">
+          Tyne and Wear
         </span>
-      </span>
-      <span className="flex flex-col leading-none">
-        <span className="text-lg font-bold tracking-tight text-foreground">Nexus</span>
-        <span className="text-[0.7rem] font-medium uppercase tracking-widest text-muted-foreground">
-          Travel
-        </span>
+        <span className="text-sm font-semibold text-foreground">Travel made simple</span>
       </span>
     </Link>
   )

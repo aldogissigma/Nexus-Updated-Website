@@ -26,6 +26,12 @@
   --color-foreground: var(--foreground);
   --color-background: var(--background);
 
+  --color-nexus-green: var(--nexus-green);
+  --color-nexus-red: var(--nexus-red);
+  --color-nexus-blue: var(--nexus-blue);
+  --color-nexus-yellow: var(--nexus-yellow);
+  --color-nexus-ink: var(--nexus-ink);
+
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -33,38 +39,44 @@
   --radius-2xl: calc(var(--radius) * 1.8);
 }
 
-/* Nexus transit palette: deep slate/navy with a distinct yellow accent */
+/* Nexus palette: taken from the Nexus logo (green, red, blue, yellow) */
 :root {
   color-scheme: light;
 
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.24 0.03 255);
+  --nexus-green: #198d79;
+  --nexus-red: #e11c1d;
+  --nexus-blue: #23b4e4;
+  --nexus-yellow: #fab52d;
+  --nexus-ink: #0c3a33;
 
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.24 0.03 255);
+  --background: #ffffff;
+  --foreground: #14211f;
 
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.24 0.03 255);
+  --card: #ffffff;
+  --card-foreground: #14211f;
 
-  /* Deep navy / slate */
-  --primary: oklch(0.32 0.07 258);
-  --primary-foreground: oklch(0.99 0.005 255);
+  --popover: #ffffff;
+  --popover-foreground: #14211f;
 
-  --secondary: oklch(0.96 0.012 255);
-  --secondary-foreground: oklch(0.32 0.07 258);
+  /* Deep Nexus green (AA contrast with white text) */
+  --primary: #12705f;
+  --primary-foreground: #ffffff;
 
-  --muted: oklch(0.965 0.008 255);
-  --muted-foreground: oklch(0.46 0.02 255);
+  --secondary: #eef6f4;
+  --secondary-foreground: #0c3a33;
 
-  /* Signal yellow accent */
-  --accent: oklch(0.86 0.16 92);
-  --accent-foreground: oklch(0.28 0.05 258);
+  --muted: #f3f7f6;
+  --muted-foreground: #4a5d59;
 
-  --destructive: oklch(0.55 0.22 27);
+  /* Nexus yellow */
+  --accent: #fab52d;
+  --accent-foreground: #14211f;
 
-  --border: oklch(0.9 0.012 255);
-  --input: oklch(0.9 0.012 255);
-  --ring: oklch(0.55 0.09 258);
+  --destructive: #c4161a;
+
+  --border: #dbe7e4;
+  --input: #c9d9d5;
+  --ring: #12705f;
 
   --radius: 0.75rem;
 
@@ -72,32 +84,95 @@
   --font-scale: 1;
 }
 
-/* High-contrast mode toggled by the accessibility bar */
+/* High-contrast mode toggled from the Settings page */
 .hc {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.14 0 0);
+  --nexus-ink: #000000;
 
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.14 0 0);
+  --background: #ffffff;
+  --foreground: #000000;
 
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.14 0 0);
+  --card: #ffffff;
+  --card-foreground: #000000;
 
-  --primary: oklch(0.16 0.02 258);
-  --primary-foreground: oklch(1 0 0);
+  --popover: #ffffff;
+  --popover-foreground: #000000;
 
-  --secondary: oklch(0.95 0 0);
-  --secondary-foreground: oklch(0.14 0 0);
+  --primary: #0a3f35;
+  --primary-foreground: #ffffff;
 
-  --muted: oklch(0.95 0 0);
-  --muted-foreground: oklch(0.26 0 0);
+  --secondary: #f2f2f2;
+  --secondary-foreground: #000000;
 
-  --accent: oklch(0.82 0.18 92);
-  --accent-foreground: oklch(0.12 0 0);
+  --muted: #f2f2f2;
+  --muted-foreground: #1f1f1f;
 
-  --border: oklch(0.2 0 0);
-  --input: oklch(0.2 0 0);
-  --ring: oklch(0.14 0 0);
+  --accent: #ffc72c;
+  --accent-foreground: #000000;
+
+  --border: #1f1f1f;
+  --input: #1f1f1f;
+  --ring: #000000;
+}
+
+/* Dark mode: same Nexus palette on a deep green-black base */
+.dark {
+  color-scheme: dark;
+
+  --nexus-ink: #0a2621;
+
+  --background: #0e1816;
+  --foreground: #e4eeeb;
+
+  --card: #15241f;
+  --card-foreground: #e4eeeb;
+
+  --popover: #15241f;
+  --popover-foreground: #e4eeeb;
+
+  /* Lighter Nexus green with dark text keeps AA contrast */
+  --primary: #3fbfa5;
+  --primary-foreground: #04201a;
+
+  --secondary: #1a332e;
+  --secondary-foreground: #d3ebe5;
+
+  --muted: #172522;
+  --muted-foreground: #a3b9b4;
+
+  --accent: #fab52d;
+  --accent-foreground: #14211f;
+
+  --destructive: #ff6b6b;
+
+  --border: #29433e;
+  --input: #36544d;
+  --ring: #3fbfa5;
+}
+
+.hc.dark {
+  --nexus-ink: #000000;
+
+  --background: #000000;
+  --foreground: #ffffff;
+
+  --card: #000000;
+  --card-foreground: #ffffff;
+
+  --popover: #000000;
+  --popover-foreground: #ffffff;
+
+  --primary: #7fe0cc;
+  --primary-foreground: #000000;
+
+  --secondary: #1a1a1a;
+  --secondary-foreground: #ffffff;
+
+  --muted: #1a1a1a;
+  --muted-foreground: #e0e0e0;
+
+  --border: #e0e0e0;
+  --input: #e0e0e0;
+  --ring: #ffffff;
 }
 
 .hc * {
@@ -120,15 +195,16 @@
     font-feature-settings: 'rlig' 1, 'calt' 1;
   }
 
-  /* Force form inputs to default to dark text */
   input,
   select,
   textarea {
-    color: #0f172a;
+    color: var(--foreground);
   }
 
-  input::placeholder {
-    color: #94a3b8;
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--muted-foreground);
+    opacity: 0.8;
   }
 
   /* Strong, always-visible focus ring for keyboard users */
@@ -144,5 +220,38 @@
   .simplified * {
     box-shadow: none !important;
     background-image: none !important;
+  }
+
+  /* Underline every link so they don't rely on colour alone */
+  .underline-links a {
+    text-decoration: underline !important;
+    text-underline-offset: 3px;
+  }
+
+  /* More generous letter, word and line spacing */
+  .readable-spacing body {
+    letter-spacing: 0.03em;
+    word-spacing: 0.08em;
+    line-height: 1.75;
+  }
+
+  .readable-spacing p,
+  .readable-spacing li {
+    line-height: 1.8 !important;
+  }
+
+  .reduce-motion *,
+  .reduce-motion *::before,
+  .reduce-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }

@@ -28,7 +28,7 @@ export function HeroJourneyPlanner() {
   }
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-5 shadow-lg md:p-6">
+    <div className="rounded-2xl border border-border bg-card p-5 text-card-foreground shadow-lg md:p-6">
       <h2 className="flex items-center gap-2 text-lg font-semibold text-foreground">
         <Search className="size-5 text-primary" aria-hidden="true" />
         Plan your journey
