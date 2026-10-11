@@ -120,6 +120,17 @@
     font-feature-settings: 'rlig' 1, 'calt' 1;
   }
 
+  /* Force form inputs to default to dark text */
+  input,
+  select,
+  textarea {
+    color: #0f172a;
+  }
+
+  input::placeholder {
+    color: #94a3b8;
+  }
+
   /* Strong, always-visible focus ring for keyboard users */
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-ring;
@@ -133,18 +144,5 @@
   .simplified * {
     box-shadow: none !important;
     background-image: none !important;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
   }
 }
