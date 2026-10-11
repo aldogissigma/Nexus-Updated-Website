@@ -23,11 +23,19 @@ export const NAV_ITEMS: NavItem[] = [
   {
     label: "About",
     href: "/about",
-    description: "Why we redesigned this website.",
+    description: "Who Nexus are and what we do.",
   },
   {
     label: "Contact",
     href: "/contact",
     description: "Get in touch and find help.",
+  },
+]
+
+export const FOOTER_EXTRA_ITEMS: NavItem[] = [
+  {
+    label: "Accessibility settings",
+    href: "/settings",
+    description: "Text size, contrast and other display options.",
   },
 ]

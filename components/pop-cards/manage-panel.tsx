@@ -31,7 +31,7 @@ export function ManagePanel() {
           <div className="flex items-center justify-between">
             <span className="flex items-center gap-2 text-sm font-medium opacity-90">
               <CreditCard className="size-4" aria-hidden="true" />
-              Standard Pop •••• 4821
+              Pop Pay As You Go •••• 4821
             </span>
             <Wallet className="size-5 opacity-90" aria-hidden="true" />
           </div>

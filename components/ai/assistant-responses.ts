@@ -20,31 +20,8 @@ export const ASSISTANT_GREETING =
   "Hi, I'm the Nexus AI Support assistant. I can help with journey planning, timetables, Pop cards and tickets. What do you need help with today?"
 
 /**
- * Conceptual response engine.
- *
- * This is placeholder logic that keyword-matches the user's message and returns
- * a helpful canned reply so the widget is fully interactive in the concept.
- *
- * ── Where a real LLM would be integrated ─────────────────────────────────────
- * In production, replace this function with a call to a server route that uses
- * the Vercel AI SDK (via AI Gateway). For example:
- *
- *   // app/api/assistant/route.ts (server)
- *   import { streamText } from "ai"
- *   export async function POST(req: Request) {
- *     const { messages } = await req.json()
- *     const result = streamText({
- *       model: "openai/gpt-5-mini",
- *       system: "You are Nexus AI Support. Only answer travel questions...",
- *       messages,
- *     })
- *     return result.toUIMessageStreamResponse()
- *   }
- *
- * The client would then use `useChat` from "@ai-sdk/react" instead of the
- * local matcher below. Grounding the model with live timetable / fares data
- * (RAG) would make answers authoritative.
- * ─────────────────────────────────────────────────────────────────────────────
+ * Offline fallback used when the OpenAI chat (see openai-chat.ts) can't be
+ * reached. It keyword-matches the message and returns a canned reply.
  */
 export function getConceptualResponse(message: string): string {
   const text = message.toLowerCase()
@@ -55,7 +32,7 @@ export function getConceptualResponse(message: string): string {
     return "To plan a journey, use the planner on the home page: enter where you're starting from and your destination, then pick a time. I'll suggest bus, Metro and ferry options with step-by-step directions. Want me to walk you through a specific trip?"
   }
   if (match(["pop card", "pop", "smartcard", "top up", "topup"])) {
-    return "Pop cards are reusable smart travel cards. You can order a standard, 16–18, or discount Pop card from the Pop Cards page. Ordering takes about 3 minutes and the card arrives in 5 working days. You can top it up online or at any Metro station machine."
+    return "Pop cards are reusable smart travel cards. There are cards for adults (Pop PAYG), under 21s (Pop blue), under 16s, season tickets, CT Pass holders and groups — see the Pop Cards page. Ordering takes about 3 minutes and the card arrives in 5 working days. You can top it up online or at any Metro station machine."
   }
   if (match(["ticket", "fare", "price", "cost", "how much", "pass"])) {
     return "Ticket prices depend on the zones you travel through and the pass type. A single adult Metro fare starts at £2.10, and a DaySaver is £5.40. Season passes (weekly, monthly, annual) offer the best value for regular travel. See the Tickets & Fares page for the full list."
@@ -70,7 +47,7 @@ export function getConceptualResponse(message: string): string {
     return "If your Pop card is lost or stolen, report it from the Contact page or call 0191 20 20 747 and we'll freeze the balance and issue a replacement. Refunds on unused season tickets can also be requested there."
   }
   if (match(["accessible", "accessibility", "wheelchair", "step free", "disabled"])) {
-    return "Every Metro station on the redesign has step-free access details on the Travel Info page. Use the accessibility toolbar at the top of any page to enlarge text, turn on high contrast, or switch to a simplified view."
+    return "Every Metro station on the redesign has step-free access details on the Travel Info page. Open Settings (top-right of every page) to enlarge text, turn on high contrast, or switch to a simplified view."
   }
   if (match(["contact", "phone", "call", "email", "help", "support"])) {
     return "You can reach the travel line on 0191 20 20 747 (7am–8pm daily) or send a message from the Contact page. I'm also here 24/7 for quick questions."

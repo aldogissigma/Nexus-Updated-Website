@@ -10,41 +10,54 @@ import {
   type ReactNode,
 } from "react"
 
-type AccessibilitySettings = {
+export type AccessibilitySettings = {
   fontScale: number
   highContrast: boolean
   simplified: boolean
+  reduceMotion: boolean
+  underlineLinks: boolean
+  readableSpacing: boolean
 }
+
+export type ToggleSetting = Exclude<keyof AccessibilitySettings, "fontScale">
 
 type AccessibilityContextValue = AccessibilitySettings & {
-  increaseFont: () => void
-  decreaseFont: () => void
-  resetFont: () => void
-  toggleContrast: () => void
-  toggleSimplified: () => void
+  setFontScale: (scale: number) => void
+  toggle: (key: ToggleSetting) => void
+  reset: () => void
 }
 
-const DEFAULTS: AccessibilitySettings = {
+export const DEFAULT_SETTINGS: AccessibilitySettings = {
   fontScale: 1,
   highContrast: false,
   simplified: false,
+  reduceMotion: false,
+  underlineLinks: false,
+  readableSpacing: false,
 }
 
-const MIN_SCALE = 0.9
-const MAX_SCALE = 1.4
-const STEP = 0.1
+export const MIN_SCALE = 0.9
+export const MAX_SCALE = 1.4
 const STORAGE_KEY = "nexus-a11y"
+
+const CLASS_NAMES: Record<ToggleSetting, string> = {
+  highContrast: "hc",
+  simplified: "simplified",
+  reduceMotion: "reduce-motion",
+  underlineLinks: "underline-links",
+  readableSpacing: "readable-spacing",
+}
 
 const AccessibilityContext = createContext<AccessibilityContextValue | null>(null)
 
 export function AccessibilityProvider({ children }: { children: ReactNode }) {
-  const [settings, setSettings] = useState<AccessibilitySettings>(DEFAULTS)
+  const [settings, setSettings] = useState<AccessibilitySettings>(DEFAULT_SETTINGS)
 
   // Restore saved preferences on mount.
   useEffect(() => {
     try {
       const raw = window.localStorage.getItem(STORAGE_KEY)
-      if (raw) setSettings({ ...DEFAULTS, ...JSON.parse(raw) })
+      if (raw) setSettings({ ...DEFAULT_SETTINGS, ...JSON.parse(raw) })
     } catch {
       /* ignore malformed storage */
     }
@@ -54,8 +67,9 @@ export function AccessibilityProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const root = document.documentElement
     root.style.setProperty("--font-scale", String(settings.fontScale))
-    root.classList.toggle("hc", settings.highContrast)
-    root.classList.toggle("simplified", settings.simplified)
+    for (const [key, className] of Object.entries(CLASS_NAMES)) {
+      root.classList.toggle(className, settings[key as ToggleSetting])
+    }
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(settings))
     } catch {
@@ -63,42 +77,23 @@ export function AccessibilityProvider({ children }: { children: ReactNode }) {
     }
   }, [settings])
 
-  const increaseFont = useCallback(
-    () =>
+  const setFontScale = useCallback(
+    (scale: number) =>
       setSettings((s) => ({
         ...s,
-        fontScale: Math.min(MAX_SCALE, Number((s.fontScale + STEP).toFixed(2))),
+        fontScale: Math.min(MAX_SCALE, Math.max(MIN_SCALE, Number(scale.toFixed(2)))),
       })),
     [],
   )
-  const decreaseFont = useCallback(
-    () =>
-      setSettings((s) => ({
-        ...s,
-        fontScale: Math.max(MIN_SCALE, Number((s.fontScale - STEP).toFixed(2))),
-      })),
+  const toggle = useCallback(
+    (key: ToggleSetting) => setSettings((s) => ({ ...s, [key]: !s[key] })),
     [],
   )
-  const resetFont = useCallback(() => setSettings((s) => ({ ...s, fontScale: 1 })), [])
-  const toggleContrast = useCallback(
-    () => setSettings((s) => ({ ...s, highContrast: !s.highContrast })),
-    [],
-  )
-  const toggleSimplified = useCallback(
-    () => setSettings((s) => ({ ...s, simplified: !s.simplified })),
-    [],
-  )
+  const reset = useCallback(() => setSettings(DEFAULT_SETTINGS), [])
 
   const value = useMemo<AccessibilityContextValue>(
-    () => ({
-      ...settings,
-      increaseFont,
-      decreaseFont,
-      resetFont,
-      toggleContrast,
-      toggleSimplified,
-    }),
-    [settings, increaseFont, decreaseFont, resetFont, toggleContrast, toggleSimplified],
+    () => ({ ...settings, setFontScale, toggle, reset }),
+    [settings, setFontScale, toggle, reset],
   )
 
   return (

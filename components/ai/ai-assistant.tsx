@@ -8,6 +8,7 @@ import {
   getConceptualResponse,
   type AssistantMessage,
 } from "./assistant-responses"
+import { askOpenAI } from "./openai-chat"
 
 function createId() {
   return Math.random().toString(36).slice(2)
@@ -54,17 +55,13 @@ export function AiAssistant() {
     setInput("")
     setThinking(true)
 
-    // Simulate the latency of a real LLM request. Replace this timeout with a
-    // fetch to a server route backed by the AI SDK (see assistant-responses.ts).
-    window.setTimeout(() => {
-      const reply: AssistantMessage = {
-        id: createId(),
-        role: "assistant",
-        content: getConceptualResponse(content),
-      }
-      setMessages((prev) => [...prev, reply])
-      setThinking(false)
-    }, 650)
+    const history = [...messages, userMessage]
+    askOpenAI(history)
+      .catch(() => getConceptualResponse(content))
+      .then((text) => {
+        setMessages((prev) => [...prev, { id: createId(), role: "assistant", content: text }])
+        setThinking(false)
+      })
   }
 
   const onSubmit = (e: React.FormEvent) => {
@@ -92,7 +89,7 @@ export function AiAssistant() {
                 <p className="text-sm font-semibold">Nexus AI Support</p>
                 <p className="flex items-center gap-1 text-xs text-primary-foreground/80">
                   <span className="size-1.5 rounded-full bg-green-400" aria-hidden="true" />
-                  Online now
+                  Powered by OpenAI
                 </p>
               </div>
             </div>
@@ -123,7 +120,7 @@ export function AiAssistant() {
                   className={
                     m.role === "user"
                       ? "max-w-[85%] rounded-2xl rounded-br-sm bg-primary px-3.5 py-2.5 text-sm text-primary-foreground"
-                      : "max-w-[85%] rounded-2xl rounded-bl-sm border border-border bg-card px-3.5 py-2.5 text-sm text-card-foreground"
+                      : "max-w-[85%] whitespace-pre-line rounded-2xl rounded-bl-sm border border-border bg-card px-3.5 py-2.5 text-sm text-card-foreground"
                   }
                 >
                   {m.content}

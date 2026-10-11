@@ -1,7 +1,7 @@
 const STEPS = [
   {
     title: "Pick your card",
-    description: "Choose the Pop card that matches your age and travel needs.",
+    description: "Use the card picker above to find the Pop card that matches your age and travel needs.",
   },
   {
     title: "Add your details",
