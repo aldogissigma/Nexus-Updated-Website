@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description:
     "Nexus owns and runs the Tyne and Wear Metro and Shields Ferry, supports local buses and manages Pop cards and concessionary travel.",
 }
-// creates title page
+// creates title page like thing at the top aswell as letting ppl specifically search for it if u do /about i think
 export default function AboutPage() {
   return (
     <>
