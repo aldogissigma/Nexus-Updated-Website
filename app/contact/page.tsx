@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description:
     "Get in touch with our customer support team by phone, email or message. We&apos;re here to help with fares, lost property, refunds and accessibility.",
 }
-
+// chaging the tab name
 export default function ContactPage() {
   return (
     <>
@@ -26,3 +26,4 @@ export default function ContactPage() {
     </>
   )
 }
+// displayes the title and discription
