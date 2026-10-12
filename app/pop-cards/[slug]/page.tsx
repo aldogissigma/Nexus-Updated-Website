@@ -7,11 +7,11 @@ import { FaqList } from "@/components/ui/faq-list"
 import { POP_CARDS, getPopCard } from "@/lib/pop-cards"
 
 export const dynamicParams = false
-
+// goes 404 if url doesnt match right 
 export function generateStaticParams() {
   return POP_CARDS.map((card) => ({ slug: card.slug }))
 }
-
+// automatically renders all the pop card things when u open the website
 export async function generateMetadata({
   params,
 }: {
@@ -20,7 +20,7 @@ export async function generateMetadata({
   const card = getPopCard((await params).slug)
   return card ? { title: card.name, description: card.summary } : {}
 }
-
+// makes it so when you click on each of the specific pages for each of the pop cards e.g pop pay as you go leads to pop pay as you go with the summary for pop pay as you go
 export default async function PopCardDetailPage({
   params,
 }: {
@@ -30,7 +30,7 @@ export default async function PopCardDetailPage({
   if (!card) notFound()
 
   const others = POP_CARDS.filter((c) => c.slug !== card.slug)
-
+// js detect if the url matches the ones provided for pop cards
   return (
     <>
       <section className="border-b border-border bg-secondary">
@@ -177,3 +177,4 @@ export default async function PopCardDetailPage({
     </>
   )
 }
+// js formatting to make it look like an actual website
