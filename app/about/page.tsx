@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description:
     "Nexus owns and runs the Tyne and Wear Metro and Shields Ferry, supports local buses and manages Pop cards and concessionary travel.",
 }
-
+// creates title page
 export default function AboutPage() {
   return (
     <>
@@ -25,3 +25,4 @@ export default function AboutPage() {
     </>
   )
 }
+// creates a banner with the specific title, description and then uses the image from assets
