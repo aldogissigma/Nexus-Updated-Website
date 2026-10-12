@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description:
     "Find the right Pop smartcard — Pay As You Go, Pop blue, Under 16, season tickets, CT Pass and group passes — and see how to apply, top up and manage it.",
 }
-
+// browser tab at the top to pop cards + desc
 export default function PopCardsPage() {
   return (
     <>
@@ -24,7 +24,7 @@ export default function PopCardsPage() {
         sideImageAlt="A Pop card being tapped on a yellow Metro card reader"
       />
       <div className="mx-auto max-w-6xl space-y-16 px-4 py-14 md:px-6 md:py-16">
-        <CardPicker />
+        <CardPicker /> 
         <OrderSteps />
         <TapGuide />
         <ManagePanel />
@@ -36,3 +36,4 @@ export default function PopCardsPage() {
     </>
   )
 }
+// those cardpicker - popfaqs are all the info on the website. card picker links to the slug pop cards file for all the diff pop cards and descriptions and stuff for them
