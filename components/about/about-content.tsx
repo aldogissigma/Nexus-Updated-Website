@@ -1,3 +1,4 @@
+// this is what is actually in the about seciton of the website and it is referenced in the app about section
 import Image from "next/image"
 import { Bus, CreditCard, HeartHandshake, Leaf, Ship, TicketCheck, TrainFront, Users } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
@@ -224,3 +225,8 @@ export function AboutContent() {
     </div>
   )
 }
+// everything in this area, you can see in the about page. if you look at it or edit it it directly relates to the area in the website
+// STATS: Quick numerical figures highlighting scale stations, buses and ferries 
+// ROLES: Cards detailing core transport responsibilities 
+//TIMELINE: Chronological history points spanning from 1969 through 1980 to 2024.
+//VALUES: Core organization principles (Built for everyone, Greener journeys, Fair value fares).
