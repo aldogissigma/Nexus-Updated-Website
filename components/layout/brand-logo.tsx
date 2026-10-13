@@ -1,3 +1,5 @@
+// just the logo that is used everywhere
+
 import Image from "next/image"
 import Link from "next/link"
 import { NexusLogo } from "@/assets"
