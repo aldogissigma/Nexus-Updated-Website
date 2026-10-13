@@ -23,3 +23,4 @@ export default function SettingsPage() {
   )
 }
 // header at the top
+// settings panel shows the light, dark mode etc
