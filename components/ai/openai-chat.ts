@@ -2,7 +2,7 @@ import type { AssistantMessage } from "./assistant-responses"
 
 /**
  * Free OpenAI chat via Puter.js (https://docs.puter.com/AI/chat/).
- * Puter gives browser apps access to OpenAI models without an API key or
+ * Puter gives browser apps access to OpenAI models without an API key 
  * server — usage is covered by Puter, not by this site.
  */
 const PUTER_SRC = "https://js.puter.com/v2/"
