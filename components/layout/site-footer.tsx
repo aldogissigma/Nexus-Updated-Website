@@ -1,3 +1,5 @@
+// the side footer at the bottom of every page
+
 import Link from "next/link"
 import { Phone } from "lucide-react"
 import { FOOTER_EXTRA_ITEMS, NAV_ITEMS } from "@/lib/navigation"
