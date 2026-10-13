@@ -1,3 +1,4 @@
+// essentially you input 2 destinations and you are given the routes that match that
 "use client"
 
 import { useState } from "react"
