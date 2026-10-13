@@ -31,6 +31,7 @@ export const metadata: Metadata = {
     apple: "/apple-icon.png",
   },
 }
+//  making mobile better, default browser titles, page descriptions aswell as icons for light and dark modes
 
 export const viewport: Viewport = {
   colorScheme: "light dark",
@@ -39,6 +40,7 @@ export const viewport: Viewport = {
     { media: "(prefers-color-scheme: dark)", color: "#0e1816" },
   ],
 }
+// makes the dark mode match the green at the top
 
 export default function RootLayout({
   children,
@@ -65,3 +67,5 @@ export default function RootLayout({
     </html>
   )
 }
+// preloads before the body renders, react build in accessibility, use of the tab button, 
+// site headers + footers, the container handling the current page, the ai assistant on the website
