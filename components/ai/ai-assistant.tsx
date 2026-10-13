@@ -1,3 +1,4 @@
+// This code is a floating AI Assistant chat widget component pinned to the bottom-right corner of the screen, allowing users to ask questions about transit, tickets, and Pop cards.
 "use client"
 
 import { useEffect, useRef, useState } from "react"
@@ -21,7 +22,8 @@ export function AiAssistant() {
   const [messages, setMessages] = useState<AssistantMessage[]>([
     { id: "greeting", role: "assistant", content: ASSISTANT_GREETING },
   ])
-
+// base greeting once you open the chat bot
+  
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const panelId = "nexus-ai-panel"
@@ -54,6 +56,7 @@ export function AiAssistant() {
     setMessages((prev) => [...prev, userMessage])
     setInput("")
     setThinking(true)
+    // saves messages
 
     const history = [...messages, userMessage]
     askOpenAI(history)
@@ -201,3 +204,6 @@ export function AiAssistant() {
     </div>
   )
 }
+//Form Submission (onSubmit): Prevents default page reloads on submission and passes the user's input text to the message handler.
+//Floating Toggle Button: A fixed button pinned to the bottom-right corner that toggles the chat window between open ("Nexus AI Support") and closed states.
+// Chat Window
