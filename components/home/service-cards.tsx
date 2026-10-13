@@ -75,3 +75,5 @@ export function ServiceCards() {
     </section>
   )
 }
+// displays the pop cards and has the transitions when you hover over them.
+// renders different layout for diff devices. 1 phone, 2 small, 3 normal
