@@ -1,3 +1,4 @@
+//This file is a React Context provider and hook that controls site wide accessibility settings and visual themes.
 "use client"
 
 import {
@@ -11,6 +12,7 @@ import {
 } from "react"
 
 export type Theme = "light" | "dark" | "system"
+// theme
 
 export type AccessibilitySettings = {
   theme: Theme
@@ -83,7 +85,6 @@ export function AccessibilityProvider({ children }: { children: ReactNode }) {
 
   const isDark = settings.theme === "dark" || (settings.theme === "system" && systemDark)
 
-  // Reflect settings onto the document and persist them.
   useEffect(() => {
     if (!loaded) return
     const root = document.documentElement
@@ -129,3 +130,8 @@ export function useAccessibility() {
   if (!ctx) throw new Error("useAccessibility must be used within AccessibilityProvider")
   return ctx
 }
+
+// State & Persistence: Manages preferences like dark mode, high contrast, font scaling, reduced motion, link underlines, and line spacing, saving them to localStorage.
+// DOM Integration: Dynamically updates CSS classes and CSS variables on the root <html> element as settings change.
+// Flicker Prevention: Provides an inline script (THEME_INIT_SCRIPT) injected before page hydration to load saved dark mode without a visual flash.
+// Developer Access: Exports the useAccessibility() custom hook so any component can read or update these accessibility controls.
