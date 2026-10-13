@@ -58,3 +58,4 @@ export function getConceptualResponse(message: string): string {
 
   return "I can help with journey planning, timetables, Pop cards and ticket prices. Try asking something like \"How do I order a Pop card?\" or \"How much is a day ticket?\" — or use one of the quick options below."
 }
+// looks at the users input and depending on what it is, gives a response back
