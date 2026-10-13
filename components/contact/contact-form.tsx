@@ -113,3 +113,7 @@ export function ContactForm() {
     </form>
   )
 }
+// State-Driven View Switch: Uses a submitted state flag. When the user submits the form, it replaces the form inputs with a confirmation screen.
+// Input Fields: Collects required fields alongside a Topic dropdown with choices like General enquiry, Lost property, Refund request, Accessibility support, and Feedback.
+// Form Reset: The confirmation view includes a "Send another message" button that sets submitted back to false so users can submit another message.
+// Accessibility Features: Includes explicit associations, screen reader status updates, and focus rings for keyboard navigation.
