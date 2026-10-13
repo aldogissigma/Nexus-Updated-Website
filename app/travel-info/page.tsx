@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   description:
     "Live departures, service alerts, planned works and practical guides for Metro, bus, ferry and local rail across Tyne and Wear.",
 }
+// tab title
 
 export default function TravelInfoPage() {
   return (
@@ -30,3 +31,8 @@ export default function TravelInfoPage() {
     </>
   )
 }
+// page header, 
+// live alerts displayes active real time delays for all services
+// timetables search is an nteractive lookup tool where you can check transit schedules and arrival times
+// Planned works lists upcoming scheduled engineering work, maintenance, and route diversions.
+// network info is network information 
