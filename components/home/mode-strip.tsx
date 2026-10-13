@@ -1,3 +1,5 @@
+// the line of images with the logos of the metros, buses, ferries and rail just above services 
+
 import Image from "next/image"
 import Link from "next/link"
 import { BusesLogo, FerryLogo, MetroLogo, RailLogo } from "@/assets"
