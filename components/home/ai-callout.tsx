@@ -74,3 +74,5 @@ export function AiCallout() {
     </section>
   )
 }
+// allows for the shortest possible tim eot be spend loading the chat bot
+// Drives User Engagement to Support: It acts as an onboarding promo banner on the homepage, explicitly teaching visitors that instant AI help exists in the bottom-right corner. This reduces support phone calls and emails by guiding users to self-serve travel questions.
