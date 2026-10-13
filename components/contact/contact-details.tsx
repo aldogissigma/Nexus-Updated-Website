@@ -71,3 +71,6 @@ export function ContactDetails() {
     </section>
   )
 }
+// DETAILS Data Array: Stores static contact channels with associated Lucide icons, headings and text lines.
+// Interactive Links: Dynamically renders clickable links if an href property is provided.
+// Card Layout: Displays each channel in a bordered card featuring a styled icon container and accessibility attributes
