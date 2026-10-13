@@ -1,3 +1,5 @@
+// the hero banner at the top of the home page with the dark green gradient train image and hero planner widget
+
 import Image from "next/image"
 import { NorthShieldsFerryLanding } from "@/assets"
 import { HeroJourneyPlanner } from "./hero-journey-planner"
