@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Change text size, contrast, motion and spacing across the Nexus website. Your choices are saved on this device.",
 }
-
+// changes tab title
 export default function SettingsPage() {
   return (
     <>
@@ -22,3 +22,4 @@ export default function SettingsPage() {
     </>
   )
 }
+// header at the top
