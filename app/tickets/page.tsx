@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description:
     "Clear, upfront ticket prices for Metro, bus, ferry and local rail. Use the fare finder to choose the best-value ticket for how you travel.",
 }
-
+// tab title
 export default function TicketsPage() {
   return (
     <>
@@ -32,3 +32,5 @@ export default function TicketsPage() {
     </>
   )
 }
+// header at the top
+// all the different sustems on the tickets and fares app e.f the fare table shows the table of fares
