@@ -196,3 +196,16 @@ export function getDepartures(stop: Stop, now = new Date()): Departure[] {
 
   return out.sort((a, b) => a.dueMins - b.dueMins).slice(0, 8)
 }
+
+// Data Structures & Station CatalogTypes: Enforces shapes for transport stops, line associations, aliases, and departure board entries.
+// Network Data contains complete lists of stations for the Green and Yellow Metro lines, key regional bus interchanges, and Shields Ferry landings, complete with common search aliases.
+
+// Fuzzy Search Engine Text Normalization: Cleans input queries by removing common filler words, standardizing variations, and stripping punctuation.
+// Typo Tolerance : Implements the Damerau–Levenshtein distance algorithm to calculate string edit distances, allowing the search bar to handle typos, misspellings, and partial inputs.
+
+// Deterministic Live Departure Engine Seed Hashing: Uses an FNV-1a hash function on the stop name to generate a consistent mathematical seed.
+// Real-time Schedule Simulation: Calculates upcoming arrivals dynamically using the current time. Returns up to 8 sorted departures with realistic headways, platform numbers, delay flags, and minute countdowns that update every minute without requiring an external backend server.
+
+
+
+
