@@ -1,3 +1,5 @@
+// the live service alerts
+
 "use client"
 
 import { useEffect, useState } from "react"
@@ -148,3 +150,18 @@ export function LiveAlerts() {
     </section>
   )
 }
+
+// maps out and has 3 different severity levels and 4 different types of transit modes. each alert can be for the same severity and transit. 
+// Maps each severity level to its corresponding Lucide icon, screen-reader label, and Tailwind CSS classes for color coding (green for good, amber for minor, red for major).
+// Groups alerts by mode and line, then selects one alert per line using the formula (seed + i) % options.length. Changing the seed state cycles to the next mock state for that line.Severity
+// then it Sorts the resulting alerts so critical issues appear first (major, minor, good).
+
+//the seed is an integer incremented when clicking Refresh, cycling the mock alerts.
+// the mode stores the currently selected mode filter.
+// then holds a Date object recording when the component was mounted or last refreshed.
+// after that it gives a random number for the updates x minutes ago
+
+
+
+
+
