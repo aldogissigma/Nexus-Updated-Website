@@ -1,3 +1,5 @@
+// the order steps just below the choose your card
+
 const STEPS = [
   {
     title: "Pick your card",
