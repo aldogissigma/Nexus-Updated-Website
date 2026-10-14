@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useRef, useState } from "react"
 import Image from "next/image"
 import { Check, CreditCard, Lock, Plus, ShieldCheck, Wallet } from "lucide-react"
 
@@ -10,10 +10,51 @@ const TOP_UP_AMOUNTS = [5, 10, 20, 40]
 
 type PaymentMethod = "apple-pay" | "card"
 
+/**
+ * Web Audio API synthesizer fallback if the static MP3 fails to load
+ */
+function playSynthesizedChime() {
+  try {
+    const AudioCtx =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+    if (!AudioCtx) return
+    const ctx = new AudioCtx()
+    if (ctx.state === "suspended") ctx.resume()
+
+    const osc1 = ctx.createOscillator()
+    const gain1 = ctx.createGain()
+    osc1.type = "sine"
+    osc1.frequency.setValueAtTime(1046.5, ctx.currentTime)
+    gain1.gain.setValueAtTime(0.2, ctx.currentTime)
+    gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15)
+    osc1.connect(gain1)
+    gain1.connect(ctx.destination)
+
+    const osc2 = ctx.createOscillator()
+    const gain2 = ctx.createGain()
+    osc2.type = "sine"
+    osc2.frequency.setValueAtTime(1567.98, ctx.currentTime + 0.1)
+    gain2.gain.setValueAtTime(0.25, ctx.currentTime + 0.1)
+    gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.45)
+    osc2.connect(gain2)
+    gain2.connect(ctx.destination)
+
+    osc1.start(ctx.currentTime)
+    osc1.stop(ctx.currentTime + 0.15)
+    osc2.start(ctx.currentTime + 0.1)
+    osc2.stop(ctx.currentTime + 0.45)
+  } catch (e) {
+    console.error("Audio error:", e)
+  }
+}
+
 export function ManagePanel() {
   const [balance, setBalance] = useState(22.4)
   const [selected, setSelected] = useState(10)
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("apple-pay")
+
+  const audioRef = useRef<HTMLAudioElement | null>(null)
 
   const [cardNumber, setCardNumber] = useState("4532 •••• •••• 8892")
   const [expiry, setExpiry] = useState("08/28")
@@ -27,15 +68,37 @@ export function ManagePanel() {
     setIsProcessing(true)
     setLastAction(null)
 
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0
+      audioRef.current.load()
+    }
+
     setTimeout(() => {
       setBalance((b) => Math.round((b + selected) * 100) / 100)
       setLastAction(`Added £${selected.toFixed(2)} to your Pop card.`)
       setIsProcessing(false)
+
+      if (audioRef.current) {
+        audioRef.current
+          .play()
+          .catch(() => {
+            playSynthesizedChime()
+          })
+      } else {
+        playSynthesizedChime()
+      }
     }, 800)
   }
 
   return (
     <section aria-labelledby="manage-heading" className="mx-auto w-full max-w-5xl">
+      <audio
+        ref={audioRef}
+        src="/assets_applepay.mp3"
+        preload="auto"
+        onError={() => console.warn("assets_applepay.mp3 missing from Vercel deployment")}
+      />
+
       <div className="mb-6">
         <h2 id="manage-heading" className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
           Pop Card & Balance
@@ -96,6 +159,7 @@ export function ManagePanel() {
         {/* Right Column: Payment Form */}
         <div className="lg:col-span-7 rounded-3xl border border-border bg-card p-6 shadow-sm md:p-8">
           <form onSubmit={handleTopUp} className="space-y-6">
+            
             {/* Top-up Amount Selector */}
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">
@@ -162,7 +226,7 @@ export function ManagePanel() {
               </div>
             </div>
 
-            {/* Credit Card Inputs */}
+            {/* Credit Card Inputs with Visa, Mastercard, and Maestro Logos */}
             {paymentMethod === "card" && (
               <div className="space-y-4 pt-2 animate-in fade-in-50 duration-200">
                 <div className="flex items-center justify-between border-b border-border pb-2.5 text-xs font-bold text-muted-foreground">
