@@ -1,3 +1,5 @@
+// the choose your card feature. depending on what option you choose, if greys out everything that doesnt fit that
+
 "use client"
 
 import Image from "next/image"
