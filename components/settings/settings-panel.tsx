@@ -1,3 +1,5 @@
+// The SettingsPanel component provides a centralized UI for managing site-wide visual and accessibility preferences using user accessibility
+
 "use client"
 
 import { AArrowDown, AArrowUp, Contrast, Eye, Link2, Monitor, Moon, Pause, RotateCcw, Sun, Type } from "lucide-react"
@@ -200,3 +202,8 @@ export function SettingsPanel() {
     </div>
   )
 }
+
+// Theme Selection: Switch between Light, Dark, or System mode via ARIA radio buttons.
+// Font Scaling: Increase or decrease text scale using buttons or a range slider with a live percentage indicator.
+// Display Toggles: Accessible switches for High Contrast, Simplified View, Readable Spacing, Underlined Links, and Reduced Motion.
+// Persistence & Reset: Displays a notice that options store locally in localStorage and includes a single-click reset button.
