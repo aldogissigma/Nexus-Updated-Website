@@ -1,3 +1,6 @@
+// This file serves as the central data model and content repository for all Pop smartcards in the application.
+// It powers both the main Pop card hub page and individual dynamic card detail pages.
+
 import type { StaticImageData } from "next/image"
 import {
   ClassAndYouthMetroPass,
