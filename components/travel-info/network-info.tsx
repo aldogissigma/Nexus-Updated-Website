@@ -1,3 +1,5 @@
+// getting around the network, metro lines and stations and travelling with.. 
+
 import Image, { type StaticImageData } from "next/image"
 import { Accessibility, Bike, Clock, Dog, Info, Luggage, PhoneCall, Search } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
