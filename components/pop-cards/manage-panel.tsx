@@ -15,15 +15,13 @@ export function ManagePanel() {
   const [selected, setSelected] = useState(10)
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("apple-pay")
 
-  // Ref to directly control the HTML audio element
+  // Reference to your custom mp3 tag
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
-  // Card Inputs
   const [cardNumber, setCardNumber] = useState("4532 •••• •••• 8892")
   const [expiry, setExpiry] = useState("08/28")
   const [cvv, setCvv] = useState("•••")
 
-  // States
   const [isProcessing, setIsProcessing] = useState(false)
   const [lastAction, setLastAction] = useState<string | null>(null)
 
@@ -32,29 +30,24 @@ export function ManagePanel() {
     setIsProcessing(true)
     setLastAction(null)
 
-    // Synchronously prime the audio element during the direct user click gesture
+    // 1. Immediately play/prime audio directly on user action so browsers allow sound
     if (audioRef.current) {
       audioRef.current.currentTime = 0
-      audioRef.current.load()
+      audioRef.current.play().catch((err) => {
+        console.error("Custom MP3 failed to play on Vercel:", err)
+      })
     }
 
     setTimeout(() => {
       setBalance((b) => Math.round((b + selected) * 100) / 100)
       setLastAction(`Added £${selected.toFixed(2)} to your Pop card.`)
       setIsProcessing(false)
-
-      // Play audio on success
-      if (audioRef.current) {
-        audioRef.current.play().catch((err) => {
-          console.warn("Audio playback was blocked:", err)
-        })
-      }
     }, 800)
   }
 
   return (
     <section aria-labelledby="manage-heading" className="mx-auto w-full max-w-5xl">
-      {/* Hidden Audio Element pointing to public/assets_applepay.mp3 */}
+      {/* Ensure the filename inside src exactly matches your file in public/ */}
       <audio ref={audioRef} src="/assets_applepay.mp3" preload="auto" />
 
       {/* Header */}
@@ -115,11 +108,9 @@ export function ManagePanel() {
           </div>
         </div>
 
-        {/* Right Column: Payment Form */}
+        {/* Right Column: Payment Controls */}
         <div className="lg:col-span-7 rounded-3xl border border-border bg-card p-6 shadow-sm md:p-8">
           <form onSubmit={handleTopUp} className="space-y-6">
-            
-            {/* Top-up Amount Selector */}
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">
                 1. Select Top-Up Amount
@@ -146,7 +137,6 @@ export function ManagePanel() {
               </div>
             </div>
 
-            {/* Payment Method Switcher */}
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">
                 2. Select Payment Method
@@ -185,7 +175,6 @@ export function ManagePanel() {
               </div>
             </div>
 
-            {/* Credit Card Form Inputs */}
             {paymentMethod === "card" && (
               <div className="space-y-4 pt-2 animate-in fade-in-50 duration-200">
                 <div className="flex items-center justify-between text-xs font-bold text-muted-foreground">
@@ -225,7 +214,6 @@ export function ManagePanel() {
               </div>
             )}
 
-            {/* Primary Action Button */}
             {paymentMethod === "apple-pay" ? (
               <button
                 type="submit"
@@ -265,7 +253,6 @@ export function ManagePanel() {
               </button>
             )}
 
-            {/* Success Notification */}
             {lastAction && (
               <div
                 className="flex items-center gap-3 rounded-2xl bg-nexus-green/15 border border-nexus-green/30 px-4 py-3.5 text-sm font-bold text-nexus-green animate-in fade-in-50"
@@ -276,7 +263,6 @@ export function ManagePanel() {
               </div>
             )}
 
-            {/* Security Footer */}
             <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground pt-1">
               <Lock className="size-3.5 text-nexus-green" />
               <span>256-Bit Encrypted Secure Transaction</span>
