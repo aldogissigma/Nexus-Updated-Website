@@ -10,6 +10,55 @@ const TOP_UP_AMOUNTS = [5, 10, 20, 40]
 
 type PaymentMethod = "apple-pay" | "card"
 
+/**
+ * Synthesizes the exact Apple Pay success sound:
+ * - Tone 1: C6 (1046.50 Hz)
+ * - Tone 2: F6 (1396.91 Hz)
+ * Crisp, accurate interval with zero external MP3 file dependency.
+ */
+function playApplePayChime() {
+  try {
+    const AudioCtx =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+    if (!AudioCtx) return
+    const ctx = new AudioCtx()
+
+    if (ctx.state === "suspended") {
+      ctx.resume()
+    }
+
+    const t = ctx.currentTime
+
+    // Tone 1: C6 (1046.50 Hz)
+    const osc1 = ctx.createOscillator()
+    const gain1 = ctx.createGain()
+    osc1.type = "sine"
+    osc1.frequency.setValueAtTime(1046.50, t)
+    gain1.gain.setValueAtTime(0.3, t)
+    gain1.gain.exponentialRampToValueAtTime(0.0001, t + 0.18)
+    osc1.connect(gain1)
+    gain1.connect(ctx.destination)
+
+    // Tone 2: F6 (1396.91 Hz) — Begins 50ms after Tone 1
+    const osc2 = ctx.createOscillator()
+    const gain2 = ctx.createGain()
+    osc2.type = "sine"
+    osc2.frequency.setValueAtTime(1396.91, t + 0.05)
+    gain2.gain.setValueAtTime(0.35, t + 0.05)
+    gain2.gain.exponentialRampToValueAtTime(0.0001, t + 0.45)
+    osc2.connect(gain2)
+    gain2.connect(ctx.destination)
+
+    osc1.start(t)
+    osc1.stop(t + 0.18)
+    osc2.start(t + 0.05)
+    osc2.stop(t + 0.45)
+  } catch (err) {
+    console.warn("Audio Context playback error:", err)
+  }
+}
+
 export function ManagePanel() {
   const [balance, setBalance] = useState(22.4)
   const [selected, setSelected] = useState(10)
@@ -31,6 +80,9 @@ export function ManagePanel() {
       setBalance((b) => Math.round((b + selected) * 100) / 100)
       setLastAction(`Added £${selected.toFixed(2)} to your Pop card.`)
       setIsProcessing(false)
+      
+      // Trigger accurate pitch chime
+      playApplePayChime()
     }, 800)
   }
 
@@ -46,7 +98,7 @@ export function ManagePanel() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-12 items-start">
-        {/* Left Column: Pop Card Visual */}
+        {/* Left Column: Pop Card Display */}
         <div className="lg:col-span-5 flex flex-col gap-4">
           <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-nexus-green via-[#12705f] to-nexus-ink p-7 text-white shadow-xl border border-white/20 transition-all duration-300 hover:scale-[1.01]">
             <div className="pointer-events-none absolute -right-12 -top-12 size-56 rounded-full bg-nexus-blue/30 blur-3xl" />
@@ -93,10 +145,11 @@ export function ManagePanel() {
           </div>
         </div>
 
-        {/* Right Column: Payment Form */}
+        {/* Right Column: Payment Controls */}
         <div className="lg:col-span-7 rounded-3xl border border-border bg-card p-6 shadow-sm md:p-8">
           <form onSubmit={handleTopUp} className="space-y-6">
-            {/* Top-up Amount Selector */}
+            
+            {/* Amount Selection */}
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">
                 1. Select Top-Up Amount
@@ -123,7 +176,7 @@ export function ManagePanel() {
               </div>
             </div>
 
-            {/* Payment Method Switcher */}
+            {/* Payment Method Selector */}
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">
                 2. Select Payment Method
@@ -220,7 +273,7 @@ export function ManagePanel() {
               </div>
             )}
 
-            {/* Primary Action Button */}
+            {/* Action Submit Button */}
             {paymentMethod === "apple-pay" ? (
               <button
                 type="submit"
@@ -260,7 +313,7 @@ export function ManagePanel() {
               </button>
             )}
 
-            {/* Success Status */}
+            {/* Success Feedback */}
             {lastAction && (
               <div
                 className="flex items-center gap-3 rounded-2xl bg-nexus-green/15 border border-nexus-green/30 px-4 py-3.5 text-sm font-bold text-nexus-green animate-in fade-in-50"
@@ -271,7 +324,7 @@ export function ManagePanel() {
               </div>
             )}
 
-            {/* Security Footer */}
+            {/* Security Note */}
             <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground pt-1">
               <Lock className="size-3.5 text-nexus-green" />
               <span>256-Bit Encrypted Secure Transaction</span>
