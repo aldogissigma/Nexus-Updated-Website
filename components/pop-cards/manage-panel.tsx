@@ -1,7 +1,11 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { Check, CreditCard, Lock, Plus, ShieldCheck, Wallet } from "lucide-react"
+
+// Import assets from your image export index
+import { ApplePay, PopPayAsYouGoPAYG } from "@/assets/images" // Adjust path to match your file structure
 
 const TOP_UP_AMOUNTS = [5, 10, 20, 40]
 
@@ -28,7 +32,7 @@ function playApplePaySuccessSound() {
     osc1.connect(gain1)
     gain1.connect(ctx.destination)
 
-    // Tone 2: 1567.98 Hz (G6)
+    // Tone 2: 1567.98 Hz (G6) - Apple double-tone interval
     const osc2 = ctx.createOscillator()
     const gain2 = ctx.createGain()
     osc2.type = "sine"
@@ -87,10 +91,10 @@ export function ManagePanel() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-12 items-start">
-        {/* Left Column: Pop Digital Card */}
+        {/* Left Column: Pop Card Visual Display */}
         <div className="lg:col-span-5 flex flex-col gap-4">
           <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-nexus-green via-[#12705f] to-nexus-ink p-7 text-white shadow-xl border border-white/20 transition-all duration-300 hover:scale-[1.01]">
-            {/* Ambient Lighting Overlay */}
+            {/* Ambient Backlight Lighting */}
             <div className="pointer-events-none absolute -right-12 -top-12 size-56 rounded-full bg-nexus-blue/30 blur-3xl" />
             <div className="pointer-events-none absolute -left-12 -bottom-12 size-56 rounded-full bg-nexus-yellow/20 blur-3xl" />
 
@@ -135,7 +139,7 @@ export function ManagePanel() {
           </div>
         </div>
 
-        {/* Right Column: Payment Form */}
+        {/* Right Column: Payment & Top Up Controls */}
         <div className="lg:col-span-7 rounded-3xl border border-border bg-card p-6 shadow-sm md:p-8">
           <form onSubmit={handleTopUp} className="space-y-6">
             
@@ -181,7 +185,14 @@ export function ManagePanel() {
                       : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  <AppleLogo className="size-6 fill-current" />
+                  <div className="relative h-6 w-20">
+                    <Image
+                      src={ApplePay}
+                      alt="Apple Pay"
+                      fill
+                      className="object-contain dark:invert"
+                    />
+                  </div>
                 </button>
                 <button
                   type="button"
@@ -255,7 +266,14 @@ export function ManagePanel() {
                 ) : (
                   <div className="flex items-center justify-center gap-2">
                     <span className="text-base font-bold">Pay with</span>
-                    <AppleLogo className="size-5 fill-current" />
+                    <div className="relative h-6 w-16">
+                      <Image
+                        src={ApplePay}
+                        alt="Apple Pay"
+                        fill
+                        className="object-contain invert dark:invert-0"
+                      />
+                    </div>
                   </div>
                 )}
               </button>
@@ -287,7 +305,7 @@ export function ManagePanel() {
               </div>
             )}
 
-            {/* Footer */}
+            {/* Security Footer */}
             <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground pt-1">
               <Lock className="size-3.5 text-nexus-green" />
               <span>256-Bit Encrypted Secure Transaction</span>
@@ -296,15 +314,6 @@ export function ManagePanel() {
         </div>
       </div>
     </section>
-  )
-}
-
-/* Standalone Clean Apple Logo Vector */
-function AppleLogo({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 170 170">
-      <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.33.13-9.13-1.9-14.4-6.07-3.81-3.05-7.85-7.88-12.12-14.48-7.23-11.25-12.87-23.75-16.92-37.5-4.05-13.75-6.07-26.65-6.07-38.7 0-15.02 3.69-27.42 11.07-37.2 7.38-9.78 16.71-14.76 27.99-14.94 4.88 0 10.12 1.25 15.73 3.75 5.61 2.5 9.5 3.75 11.67 3.75 1.95 0 5.92-1.25 11.91-3.75 5.99-2.5 11.04-3.66 15.15-3.5 10.8.44 19.82 4.47 27.06 12.09-21.75 13.12-22.62 31.87-2.62 43.12 4.58 2.52 9.53 4.41 14.86 5.67-1.19 6.88-3.03 13.88-5.52 21.01zM119.22 31.88c0-7.38 2.65-14.38 7.95-21 5.3-6.62 11.83-10.42 19.58-11.4 1.13 8.38-1.57 16.03-8.1 22.95-6.53 6.92-13.68 10.22-21.45 9.9-0.08-0.15-0.18-0.3-0.18-0.45z" />
-    </svg>
   )
 }
 
