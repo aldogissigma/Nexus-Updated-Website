@@ -17,45 +17,176 @@ export const QUICK_PROMPTS: QuickPrompt[] = [
 ]
 
 export const ASSISTANT_GREETING =
-  "Hi, I'm the Nexus AI Support assistant. I can help with journey planning, timetables, Pop cards and tickets. What do you need help with today?"
+  "Hi! I'm the Nexus AI Support assistant. I can help with journey planning, timetables, Pop cards, and tickets. What do you need help with today?"
+
+interface IntentDefinition {
+  id: string
+  // RegExp or strings mapped to exact/boundary matches
+  keywords: (string | RegExp)[]
+  response: string
+}
+
+const INTENTS: IntentDefinition[] = [
+  {
+    id: "journey",
+    keywords: [
+      /\bjourney\b/i,
+      /\bplan\b/i,
+      /\broute\b/i,
+      /\btravel to\b/i,
+      /\bget to\b/i,
+      /\bdirections\b/i,
+      /\bmetro map\b/i,
+    ],
+    response:
+      "To plan a journey, use the planner on the homepage: enter your origin and destination, then choose your preferred time. I'll display bus, Metro, and Shields Ferry options with step-by-step directions. Need help planning a specific route?",
+  },
+  {
+    id: "pop_card",
+    keywords: [
+      /\bpop card\b/i,
+      /\bpop blue\b/i,
+      /\bpop payg\b/i,
+      /\bsmartcard\b/i,
+      /\btop ?up\b/i,
+      /\bpop\b/i,
+    ],
+    response:
+      "Pop cards are reusable smartcards for travel across Tyne and Wear. Options include Pop PAYG (Adults), Pop Blue (under-21s), Under-16, and Metro Season Passes. Cards take about 3 minutes to order online and arrive within 5 working days. You can top up online or at any Metro station ticket machine.",
+  },
+  {
+    id: "tickets_fares",
+    keywords: [
+      /\bticket\b/i,
+      /\bfare\b/i,
+      /\bprice\b/i,
+      /\bcost\b/i,
+      /\bhow much\b/i,
+      /\bpass\b/i,
+      /\bdaysaver\b/i,
+      /\bsingle\b/i,
+    ],
+    response:
+      "Ticket prices depend on how many zones you travel through (Zones A, B, and C). Single adult Metro fares start at £2.10, and a DaySaver starts at £5.40. Pop PAYG offers cheaper single and daily capped fares. Visit our Tickets & Fares page for the full price table.",
+  },
+  {
+    id: "timetables",
+    keywords: [
+      /\btimetable\b/i,
+      /\btime ?table\b/i,
+      /\bschedule\b/i,
+      /\bdeparture\b/i,
+      /\bnext train\b/i,
+      /\bnext bus\b/i,
+      /\bwhen\b/i,
+    ],
+    response:
+      "You can find live timetables on our Travel Info page. Search by station, bus stop, or line number to view real-time departures and scheduled arrival times.",
+  },
+  {
+    id: "disruptions",
+    keywords: [
+      /\bdisruption\b/i,
+      /\bdelay\b/i,
+      /\balert\b/i,
+      /\bcancel\b/i,
+      /\bproblem\b/i,
+      /\bstrike\b/i,
+      /\bworks\b/i,
+      /\bsuspension\b/i,
+    ],
+    response:
+      "Check the Live Alerts banner on our Travel Info page for real-time Metro, bus, and ferry service status updates. If a service line is affected, tell me where you're heading and I can suggest an alternative route.",
+  },
+  {
+    id: "refunds_lost",
+    keywords: [
+      /\brefund\b/i,
+      /\blost\b/i,
+      /\bstolen\b/i,
+      /\breplace\b/i,
+      /\breplacement\b/i,
+      /\bbalance\b/i,
+    ],
+    response:
+      "If your Pop card is lost or stolen, report it on our Contact page or call 0191 20 20 747. We can block your old card, transfer your remaining balance, and dispatch a replacement. Season ticket refund requests can also be initiated there.",
+  },
+  {
+    id: "accessibility",
+    keywords: [
+      /\baccessib\w*\b/i,
+      /\bwheelchair\b/i,
+      /\bstep ?free\b/i,
+      /\bdisabled\b/i,
+      /\blift\b/i,
+      /\bramp\b/i,
+      /\brailramps\b/i,
+    ],
+    response:
+      "All Metro stations feature step-free access via ramps or lifts. You can check individual station accessibility features on our Travel Info page. You can also customize font size, high contrast, or simplified views in the Settings panel (top-right header).",
+  },
+  {
+    id: "contact",
+    keywords: [
+      /\bcontact\b/i,
+      /\bphone\b/i,
+      /\bcall\b/i,
+      /\bemail\b/i,
+      /\bhelp line\b/i,
+      /\bcustomer service\b/i,
+      /\bsupport\b/i,
+    ],
+    response:
+      "You can reach the Nexus Customer Services team at 0191 20 20 747 (7am–8pm daily) or send us an online enquiry via the Contact page. I am also available 24/7 right here for instant questions!",
+  },
+  {
+    id: "greetings",
+    keywords: [
+      /\bhello\b/i,
+      /\bhi\b/i,
+      /\bhey\b/i,
+      /\bgood morning\b/i,
+      /\bgood afternoon\b/i,
+      /\bgood evening\b/i,
+    ],
+    response:
+      "Hello! I'm your Nexus AI travel assistant. How can I assist you with Metro, bus, ferry journeys, Pop cards, or timetables today?",
+  },
+]
+
+const DEFAULT_FALLBACK_RESPONSE =
+  'I can help with journey planning, timetables, Pop cards, and ticket prices. Try asking something like "How do I order a Pop card?" or "How much is a day ticket?" — or pick one of the quick prompts below!'
 
 /**
- * Offline fallback used when the OpenAI chat (see openai-chat.ts) can't be
- * reached. It keyword-matches the message and returns a canned reply.
+ * Enhanced Offline fallback matcher.
+ * Calculates keyword density scores to pick the best matching response.
  */
 export function getConceptualResponse(message: string): string {
-  const text = message.toLowerCase()
+  const cleanInput = message.trim().toLowerCase()
+  if (!cleanInput) return DEFAULT_FALLBACK_RESPONSE
 
-  const match = (keywords: string[]) => keywords.some((k) => text.includes(k))
+  let bestIntent: IntentDefinition | null = null
+  let highestScore = 0
 
-  if (match(["journey", "plan", "route", "get to", "travel to"])) {
-    return "To plan a journey, use the planner on the home page: enter where you're starting from and your destination, then pick a time. I'll suggest bus, Metro and ferry options with step-by-step directions. Want me to walk you through a specific trip?"
-  }
-  if (match(["pop card", "pop", "smartcard", "top up", "topup"])) {
-    return "Pop cards are reusable smart travel cards. There are cards for adults (Pop PAYG), under 21s (Pop blue), under 16s, season tickets, CT Pass holders and groups — see the Pop Cards page. Ordering takes about 3 minutes and the card arrives in 5 working days. You can top it up online or at any Metro station machine."
-  }
-  if (match(["ticket", "fare", "price", "cost", "how much", "pass"])) {
-    return "Ticket prices depend on the zones you travel through and the pass type. A single adult Metro fare starts at £2.10, and a DaySaver is £5.40. Season passes (weekly, monthly, annual) offer the best value for regular travel. See the Tickets & Fares page for the full list."
-  }
-  if (match(["timetable", "time table", "schedule", "departure", "when"])) {
-    return "You'll find timetables on the Travel Info page. Search by route number or stop name to see the next departures. Live times update in real time when the vehicle is running."
-  }
-  if (match(["disruption", "delay", "alert", "cancel", "problem", "strike"])) {
-    return "Check the Live Alerts panel on the Travel Info page for today's disruptions. If your specific line is affected I can suggest an alternative route — just tell me where you're travelling."
-  }
-  if (match(["refund", "lost", "stolen", "replace"])) {
-    return "If your Pop card is lost or stolen, report it from the Contact page or call 0191 20 20 747 and we'll freeze the balance and issue a replacement. Refunds on unused season tickets can also be requested there."
-  }
-  if (match(["accessible", "accessibility", "wheelchair", "step free", "disabled"])) {
-    return "Every Metro station on the redesign has step-free access details on the Travel Info page. Open Settings (top-right of every page) to enlarge text, turn on high contrast, or switch to a simplified view."
-  }
-  if (match(["contact", "phone", "call", "email", "help", "support"])) {
-    return "You can reach the travel line on 0191 20 20 747 (7am–8pm daily) or send a message from the Contact page. I'm also here 24/7 for quick questions."
-  }
-  if (match(["hello", "hi", "hey", "morning", "afternoon"])) {
-    return "Hello! I can help with journeys, timetables, Pop cards and tickets. What would you like to do?"
+  for (const intent of INTENTS) {
+    let score = 0
+    for (const pattern of intent.keywords) {
+      if (typeof pattern === "string") {
+        if (cleanInput.includes(pattern.toLowerCase())) {
+          score += 1
+        }
+      } else if (pattern.test(cleanInput)) {
+        score += 1.5 // regex boundary match gets higher weight
+      }
+    }
+
+    if (score > highestScore) {
+      highestScore = score
+      bestIntent = intent
+    }
   }
 
-  return "I can help with journey planning, timetables, Pop cards and ticket prices. Try asking something like \"How do I order a Pop card?\" or \"How much is a day ticket?\" — or use one of the quick options below."
+  return bestIntent && highestScore > 0
+    ? bestIntent.response
+    : DEFAULT_FALLBACK_RESPONSE
 }
-// looks at the users input and depending on what it is, gives a response back
