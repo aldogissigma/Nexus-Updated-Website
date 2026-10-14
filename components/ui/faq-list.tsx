@@ -1,3 +1,5 @@
+// this is a reusable ui component used on pages like Tickets & fares to do the faqs
+
 import { ChevronDown } from "lucide-react"
 
 export type Faq = { question: string; answer: string }
