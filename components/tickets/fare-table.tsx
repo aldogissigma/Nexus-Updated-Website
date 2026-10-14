@@ -1,3 +1,5 @@
+// has a dataset and is the table under the title of clear, upfront prices
+
 type Fare = {
   name: string
   detail: string
