@@ -1,3 +1,5 @@
+// header at the top of the website with settings, the links to the different areas + light and dark mde
+
 "use client"
 
 import Link from "next/link"
