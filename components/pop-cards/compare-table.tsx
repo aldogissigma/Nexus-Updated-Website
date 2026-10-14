@@ -1,3 +1,5 @@
+// simple table that is just below the card picker and gives you advantages and disadvantages 
+
 import Link from "next/link"
 import { POP_CARDS } from "@/lib/pop-cards"
 
