@@ -4,15 +4,15 @@ import { useState } from "react"
 import Image from "next/image"
 import { Check, CreditCard, Lock, Plus, ShieldCheck, Wallet } from "lucide-react"
 
-// Import assets from your image export index
-import { ApplePay, PopPayAsYouGoPAYG } from "@/assets/images" // Adjust path to match your file structure
+// Direct re-exports from your assets/index.tsx
+import { ApplePay, PopPayAsYouGoPAYG } from "@/assets"
 
 const TOP_UP_AMOUNTS = [5, 10, 20, 40]
 
 type PaymentMethod = "apple-pay" | "card"
 
 /**
- * Synthesizes the Apple Pay success double-chime using Web Audio API
+ * Plays Apple Pay success double-tone sound via Web Audio API
  */
 function playApplePaySuccessSound() {
   try {
@@ -22,22 +22,26 @@ function playApplePaySuccessSound() {
     if (!AudioCtx) return
     const ctx = new AudioCtx()
 
-    // Tone 1: 1046.5 Hz (C6)
+    if (ctx.state === "suspended") {
+      ctx.resume()
+    }
+
+    // Tone 1: C6 (1046.5 Hz)
     const osc1 = ctx.createOscillator()
     const gain1 = ctx.createGain()
     osc1.type = "sine"
     osc1.frequency.setValueAtTime(1046.5, ctx.currentTime)
-    gain1.gain.setValueAtTime(0.15, ctx.currentTime)
+    gain1.gain.setValueAtTime(0.2, ctx.currentTime)
     gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15)
     osc1.connect(gain1)
     gain1.connect(ctx.destination)
 
-    // Tone 2: 1567.98 Hz (G6) - Apple double-tone interval
+    // Tone 2: G6 (1567.98 Hz)
     const osc2 = ctx.createOscillator()
     const gain2 = ctx.createGain()
     osc2.type = "sine"
     osc2.frequency.setValueAtTime(1567.98, ctx.currentTime + 0.1)
-    gain2.gain.setValueAtTime(0.2, ctx.currentTime + 0.1)
+    gain2.gain.setValueAtTime(0.25, ctx.currentTime + 0.1)
     gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.45)
     osc2.connect(gain2)
     gain2.connect(ctx.destination)
@@ -75,7 +79,7 @@ export function ManagePanel() {
       setLastAction(`Added £${selected.toFixed(2)} to your Pop card.`)
       setIsProcessing(false)
       playApplePaySuccessSound()
-    }, 1000)
+    }, 800)
   }
 
   return (
@@ -94,7 +98,6 @@ export function ManagePanel() {
         {/* Left Column: Pop Card Visual Display */}
         <div className="lg:col-span-5 flex flex-col gap-4">
           <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-nexus-green via-[#12705f] to-nexus-ink p-7 text-white shadow-xl border border-white/20 transition-all duration-300 hover:scale-[1.01]">
-            {/* Ambient Backlight Lighting */}
             <div className="pointer-events-none absolute -right-12 -top-12 size-56 rounded-full bg-nexus-blue/30 blur-3xl" />
             <div className="pointer-events-none absolute -left-12 -bottom-12 size-56 rounded-full bg-nexus-yellow/20 blur-3xl" />
 
@@ -139,7 +142,7 @@ export function ManagePanel() {
           </div>
         </div>
 
-        {/* Right Column: Payment & Top Up Controls */}
+        {/* Right Column: Payment Form */}
         <div className="lg:col-span-7 rounded-3xl border border-border bg-card p-6 shadow-sm md:p-8">
           <form onSubmit={handleTopUp} className="space-y-6">
             
