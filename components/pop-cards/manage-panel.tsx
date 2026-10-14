@@ -4,54 +4,26 @@ import { useState } from "react"
 import Image from "next/image"
 import { Check, CreditCard, Lock, Plus, ShieldCheck, Wallet } from "lucide-react"
 
-// Direct re-exports from your assets/index.tsx
-import { ApplePay, PopPayAsYouGoPAYG } from "@/assets"
+// Direct re-exports from your assets/index.tsx (or assets folder)
+import { ApplePay } from "@/assets"
+import applePaySound from "@/assets/applepay.mp3"
 
 const TOP_UP_AMOUNTS = [5, 10, 20, 40]
 
 type PaymentMethod = "apple-pay" | "card"
 
 /**
- * Plays Apple Pay success double-tone sound via Web Audio API
+ * Plays the local applepay.mp3 audio file
  */
-function playApplePaySuccessSound() {
+function playApplePaySound() {
   try {
-    const AudioCtx =
-      window.AudioContext ||
-      (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
-    if (!AudioCtx) return
-    const ctx = new AudioCtx()
-
-    if (ctx.state === "suspended") {
-      ctx.resume()
-    }
-
-    // Tone 1: C6 (1046.5 Hz)
-    const osc1 = ctx.createOscillator()
-    const gain1 = ctx.createGain()
-    osc1.type = "sine"
-    osc1.frequency.setValueAtTime(1046.5, ctx.currentTime)
-    gain1.gain.setValueAtTime(0.2, ctx.currentTime)
-    gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15)
-    osc1.connect(gain1)
-    gain1.connect(ctx.destination)
-
-    // Tone 2: G6 (1567.98 Hz)
-    const osc2 = ctx.createOscillator()
-    const gain2 = ctx.createGain()
-    osc2.type = "sine"
-    osc2.frequency.setValueAtTime(1567.98, ctx.currentTime + 0.1)
-    gain2.gain.setValueAtTime(0.25, ctx.currentTime + 0.1)
-    gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.45)
-    osc2.connect(gain2)
-    gain2.connect(ctx.destination)
-
-    osc1.start(ctx.currentTime)
-    osc1.stop(ctx.currentTime + 0.15)
-    osc2.start(ctx.currentTime + 0.1)
-    osc2.stop(ctx.currentTime + 0.45)
+    const audio = new Audio(applePaySound)
+    audio.currentTime = 0
+    audio.play().catch((err) => {
+      console.warn("Autoplay or audio playback was prevented:", err)
+    })
   } catch (err) {
-    console.error("Audio playback error", err)
+    console.error("Audio playback error:", err)
   }
 }
 
@@ -78,7 +50,7 @@ export function ManagePanel() {
       setBalance((b) => Math.round((b + selected) * 100) / 100)
       setLastAction(`Added £${selected.toFixed(2)} to your Pop card.`)
       setIsProcessing(false)
-      playApplePaySuccessSound()
+      playApplePaySound()
     }, 800)
   }
 
