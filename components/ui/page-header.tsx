@@ -1,3 +1,5 @@
+// this is a reusable hero banner layout used at the top of major pages across the site
+
 import Image, { type StaticImageData } from "next/image"
 import type { ReactNode } from "react"
 
