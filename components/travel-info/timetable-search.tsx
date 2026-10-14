@@ -198,3 +198,19 @@ export function TimetableSearch() {
     </section>
   )
 }
+
+// Filters stops dynamically as the user types using searchStops(query)
+// Implements WAI-ARIA combobox attributes (role="combobox", role="listbox", role="option", aria-activedescendant) for screen reader support
+// Supports keyboard navigation using ArrowUp and ArrowDown to highlight options, Escape to dismiss the list, and Enter to select
+
+// When a stop is selected, a 30-second setInterval updates the now state to keep countdown times current
+// Generates a sorted departure list displaying destination, line name, platform/stand number, delay status, and remaining minutes (rendering "Due" when dueMins === 0)
+
+// Maps transport types to icons (TrainFront for Metro, Bus for buses, Ship for ferries)
+// Applies line-specific color badges using the BADGE map (Green line, Yellow line, Shields Ferry, and red fallback for buses)
+
+// Displays a fallback status alert (notFound) if a search yields no matching stops
+// Shows a top banner displaying the selected station name and a localized update timestamp (now.toLocaleTimeString)
+
+
+
