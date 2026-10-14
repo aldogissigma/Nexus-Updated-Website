@@ -191,3 +191,9 @@ export function FareFinder() {
     </section>
   )
 }
+
+// The <FareFinder/> client component is an interactive ticket recommendation wizard that guides users to the most cost-effective travel option:
+// 3-Step Selector: Asks who is travelling (age/eligibility), travel frequency (occasional, regular, daily), and transport mode (mostly Metro vs. mixed bus/Metro).
+// Recommendation Engine: Uses useMemo and custom rules (recommend()) to evaluate inputs and suggest options like Pay As You Go, Pop Blue, Gold Card, or Network One passes.
+// Accessible Form Controls: Uses a generic <Options/> component with accessible <fieldset>, <legend>, and standard <input type="radio"> controls.
+// Live ARIA Output: Encloses recommendations in a role="status" container with aria-live="polite", ensuring updates are announced immediately to screen reader users alongside a direct link to the relevant Pop card page.
