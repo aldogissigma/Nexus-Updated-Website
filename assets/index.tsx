@@ -16,6 +16,7 @@ import MetroLogo from "./metro_logo.png"
 import BusesLogo from "./buses.png"
 import RailLogo from "./rail.png"
 import MayorFare from "./mayor_fare.png"
+import ApplePay from './Apple_Pay_logo.svg.webp"
 
 export {
   NexusHQ,
@@ -36,5 +37,6 @@ export {
   BusesLogo,
   RailLogo,
   MayorFare,
+  ApplePay
 }
 // rexports all images so people can reference it easily
