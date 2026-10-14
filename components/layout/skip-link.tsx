@@ -1,3 +1,5 @@
+// screen reader users to bypass repetitive header navigation and jump straight to the page's primary content.
+
 export function SkipLink() {
   return (
     <a
