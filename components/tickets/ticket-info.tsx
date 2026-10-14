@@ -1,3 +1,5 @@
+// this covers the last 3 headers aswell as questions at the bottom
+
 import Image from "next/image"
 import Link from "next/link"
 import { Banknote, CreditCard, Smartphone, Store } from "lucide-react"
@@ -188,3 +190,8 @@ export function TicketFaqs() {
     </section>
   )
 }
+
+// MayorsFare: A hero callout banner highlighting regional fare caps backed by the North East Mayor, featuring promotional imagery and a direct link to apply for a Pop Blue card.
+// TicketsByMode: A four-column grid detailing ticket rules and validity across all four transit modes (Metro, Bus, Shields Ferry, and Local Rail).
+// MetroZones: A two-column informational section explaining Metro tariff zones (Zone A, Zone B, Zone C) with color-coded badges on the left, alongside payment methods (Pop card, contactless, ticket machines, and cash) on the right.
+// TicketFaqs: A ticket-specific FAQ section using <FaqList/> to answer common passenger questions regarding child fares, missed tap-offs, refunds, penalty fares, and multi-modal passes.
