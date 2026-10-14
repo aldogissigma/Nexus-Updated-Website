@@ -1,3 +1,6 @@
+// This code is a reusable Button built on top of Base UI and styled using Tailwind css
+// 6 diferent types for diff situations
+
 import { Button as ButtonPrimitive } from '@base-ui/react/button'
 import { cva, type VariantProps } from 'class-variance-authority'
 
